@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Шулуужук А., Скандарова П., Замбалова Д., Кузнецова С., Поляков Г., Цвелев С.">
+  <title>Структура научной презентации</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <style type="text/css">Not found: /reveal.js@4.6.1//dist/reset.css</style>
+  <style type="text/css">Not found: /reveal.js@4.6.1//dist/reveal.css</style>
+  <style>
+.reveal .sourceCode { 
+overflow: visible;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">Not found: /reveal.js@4.6.1//dist/theme/beige.css</style>
+  
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Структура научной презентации</h1>
+  <p class="subtitle">Простейший шаблон</p>
+  <p class="author">Шулуужук А., Скандарова П., Замбалова Д., Кузнецова
+С., Поляков Г., Цвелев С.</p>
+  <p class="institute">Российский университет дружбы народов, Москва,
+Россия</p>
+  <p class="date">17 мая 2025</p>
+</section>
+
+<section>
+<section id="вводная-часть" class="title-slide slide level1">
+<h1>Вводная часть</h1>
+
+</section>
+<section id="цели-проекта" class="slide level2">
+<h2>Цели проекта</h2>
+<ul>
+<li>Наша цель заключалась в разработке численной модели, описывающей
+процессы теплопередачи и химического горения в сплошной среде. В рамках
+этой задачи мы стремились не только создать корректную математическую и
+численную реализацию, но и добиться визуализации поведения системы при
+различных параметрах — особенно вблизи критических режимов.</li>
+</ul>
+<p>Проще говоря, мы моделировали, как распространяется тепло в
+материале, где одновременно протекает химическая реакция. Такие задачи
+актуальны для проектирования термостойких покрытий, изучения горения в
+пористых телах, или анализа стабильности процессов в химических
+реакторах.</p>
+</section></section>
+<section>
+<section id="основная-часть" class="title-slide slide level1">
+<h1>Основная часть</h1>
+
+</section>
+<section id="инструменты-и-языки" class="slide level2">
+<h2>Инструменты и языки</h2>
+<p>Для численного моделирования мы выбрали язык <strong>Julia</strong>.
+Его основные преимущества — высокая производительность, удобство работы
+с массивами и встроенные возможности для численных методов. А для
+визуализации результатов использовался <strong>Python</strong>,
+поскольку он предоставляет мощные библиотеки, такие как Matplotlib и
+NumPy, для построения графиков и анализа данных. Такая связка позволила
+нам эффективно разделить задачи: вычисления производятся на Julia, а
+интерпретация и визуализация — на Python</p>
+</section>
+<section id="математическая-модель" class="slide level2">
+<h2>Математическая модель</h2>
+<p>Модель основана на уравнении теплопроводности, в которое добавлен
+источник тепла, обусловленный экзотермической химической реакцией.
+Реакция описана уравнением Аррениуса, и её интенсивность зависит от
+температуры, предэкспоненциального множителя и энергии активации. Также
+учитывается теплообмен с внешней средой через правую границу материала —
+это реализовано в виде конвективного теплообмена. Таким образом, у нас
+есть комплексная система: внутренняя теплопередача, генерация тепла за
+счёт химической реакции и теплообмен снаружи.</p>
+</section>
+<section id="структура-программы" class="slide level2">
+<h2>Структура программы</h2>
+<p>Всю реализацию мы разбили на два ключевых модуля:</p>
+<ul>
+<li><strong>Модуль решения уравнений</strong>: реализует численные
+схемы. Здесь мы применили конечно-разностные методы — в частности,
+неявную схему с методом прогонки (алгоритм Томаса). Он хорошо подходит
+для решения трёхдиагональных матриц, возникающих при дискретизации
+уравнений.</li>
+<li><strong>Модуль визуализации</strong>: строит графики зависимости
+температуры от времени и по координате. Мы исследовали поведение
+температуры в различных точках материала, а также общий характер решения
+при разных значениях энергии активации.</li>
+</ul>
+</section>
+<section id="численная-реализация" class="slide level2">
+<h2>Численная реализация</h2>
+<p>Реализация на <strong>языке Julia</strong> начинается с инициализации
+пространственной и временной сетки. Пространство разбивается на 1000
+узлов, что позволяет получить достаточно точные распределения
+температуры. Шаг по времени подбирается таким образом, чтобы обеспечить
+устойчивость численной схемы. Основной этап — решение системы уравнений
+на каждом временном шаге. Для этого применяется метод прогонки. Он
+включает прямой и обратный ход:</p>
+<ul>
+<li>В прямом ходе рассчитываются коэффициенты альфа и бета.</li>
+<li>В обратном — по ним определяется температура в каждом узле. Это
+итеративный процесс: на каждом шаге рассчитываются новые значения
+температуры, и вычисления продолжаются, пока не будет достигнуто
+сходимости по критерию (разница между итерациями становится меньше ε =
+1e-5).</li>
+</ul>
+<p>На границах задаются условия:</p>
+<ul>
+<li>Левая граница — фиксированная температура.</li>
+<li>Правая — теплообмен с внешней средой. Формула на правой границе
+учитывает и теплопроводность материала, и коэффициент теплоотдачи с
+окружающей средой. После завершения расчётов данные сохраняются в файл,
+где каждая строка содержит значения температуры в конкретный момент
+времени.</li>
+</ul>
+</section>
+<section id="реализация-на-python" class="slide level2">
+<h2>Реализация на Python</h2>
+<p>На стороне Python нами реализован скрипт, который:</p>
+<ul>
+<li>Загружает рассчитанные температурные поля;</li>
+<li>Строит графики по времени и пространству;</li>
+<li>Позволяет наглядно сравнивать поведение системы при различных
+параметрах. Мы сосредоточили внимание на визуализации перехода между
+<strong>стационарным</strong> и <strong>пульсирующим</strong> режимами
+горения. Это проявляется в характере графика: при низкой энергии
+активации решение стабилизируется, а при превышении критического
+значения — температура начинает колебаться, иногда резко.</li>
+</ul>
+</section>
+<section id="ключевые-параметры" class="slide level2">
+<h2>Ключевые параметры</h2>
+<p>Особое внимание мы уделили подбору параметров модели. Среди них:</p>
+<ul>
+<li><strong>λ (lambda)</strong> — теплопроводность;</li>
+<li><strong>ρ (ро)</strong> — плотность материала;</li>
+<li><strong>c</strong> — теплоёмкость;</li>
+<li><strong>E</strong> — энергия активации;</li>
+<li><strong>q</strong> — тепловой эффект реакции;</li>
+<li><strong>k₀ </strong> — предэкспоненциальный множитель. Изменяя
+только значение <strong>E</strong> , мы смогли наблюдать переход от
+устойчивого к неустойчивому режиму. Это важный результат, который
+подтверждает физическую адекватность модели.</li>
+</ul>
+</section>
+<section id="результаты-на-графиках" class="slide level2">
+<h2>Результаты на графиках</h2>
+<p>На первом графике температура монотонно возрастает и выходит на плато
+— признак стабилизации. Но при <strong>E = 36600 Дж/моль и выше</strong>
+наблюдаются колебания температуры — это <strong>пульсирующее
+горение</strong>. Такой режим характерен для автоколебательных
+химических реакций, где обратная связь между температурой и скоростью
+реакции вызывает периодические всплески. Модель это отлично
+воспроизводит.</p>
+</section>
+<section id="обсуждение-результатов" class="slide level2">
+<h2>Обсуждение результатов</h2>
+<p>Один из важнейших итогов — возможность управляемо моделировать
+переход между режимами горения. Мы доказали, что модель реагирует на
+изменение параметров так, как предсказывает физика процесса. Это
+означает, что:</p>
+<ul>
+<li>Модель пригодна для прогнозирования поведения реальных материалов
+при тепловом воздействии.</li>
+<li>Её можно адаптировать под разные задачи: от пожарной безопасности до
+проектирования реакторов. Кроме того, работа с двумя языками
+программирования показала себя с лучшей стороны: мы чётко разделили
+вычислительную и аналитическую части, что облегчило отладку,
+эксперименты и модификации.</li>
+</ul>
+</section>
+<section id="командная-работа-и-самооценка" class="slide level2">
+<h2>Командная работа и самооценка</h2>
+<p>Работа над проектом велась командно. Мы распределили роли так, чтобы
+задействовать сильные стороны каждого участника: кто-то работал над
+математической частью, кто-то над кодом, кто-то отвечал за визуализацию
+и оформление. Каждый участник внёс вклад в реализацию, тестирование и
+анализ модели. Благодаря тесной коммуникации мы быстро выявляли ошибки,
+предлагали улучшения, адаптировали параметры и делали выводы. Важно
+отметить, что:</p>
+<ul>
+<li>Все модули проекта документированы и воспроизводимы.</li>
+<li>Код оформлен в виде отдельных файлов с возможностью масштабирования
+модели.</li>
+<li>Г рафики сопровождаются интерпретацией и физическим
+обоснованием.</li>
+</ul>
+</section>
+<section id="заключение" class="slide level2">
+<h2>Заключение</h2>
+<p>В рамках проекта:</p>
+<ul>
+<li>Мы реализовали математическую модель теплопроводности и
+детерминированного горения;</li>
+<li>Разработали численный алгоритм на Julia с высокой
+производительностью;</li>
+<li>Выполнили визуализацию на Python;</li>
+<li>Исследовали критические режимы в системе;</li>
+<li>И подтвердили адекватность модели результатами расчётов. Проект дал
+нам опыт в математическом моделировании, численных методах, программной
+реализации и командной работе.</li>
+</ul>
+<p>Спасибо за внимание.</p>
+</section>
+<section id="источники" class="slide level2">
+<h2>Источники</h2>
+<ul>
+<li>Моделирование физических процессов и явлений на ПК / Д. А. Медведев,
+А. Л. Куперштох, Э. Р. Прууэл [и др.]. – Новосибирск : Новосиб. гос.
+ун-т, 2010. – 101 с. – ISBN 978-5-94356-933-3.</li>
+</ul>
+</section></section>
+    </div>
+  </div>
+
+  <script src="data:text/plain;charset=UTF-8;charset=utf-8,Not%20found%3A%20%2Freveal%2Ejs%404%2E6%2E1%2F%2Fdist%2Freveal%2Ejs"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="data:text/plain;charset=UTF-8;charset=utf-8,Not%20found%3A%20%2Freveal%2Ejs%404%2E6%2E1%2F%2Fplugin%2Fnotes%2Fnotes%2Ejs"></script>
+  <script src="data:text/plain;charset=UTF-8;charset=utf-8,Not%20found%3A%20%2Freveal%2Ejs%404%2E6%2E1%2F%2Fplugin%2Fsearch%2Fsearch%2Ejs"></script>
+  <script src="data:text/plain;charset=UTF-8;charset=utf-8,Not%20found%3A%20%2Freveal%2Ejs%404%2E6%2E1%2F%2Fplugin%2Fzoom%2Fzoom%2Ejs"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
